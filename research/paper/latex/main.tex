@@ -32,17 +32,20 @@ keeping and for moving information. The resulting rule, \emph{Persistence-Econom
 places each trace where its accumulated responsibility for prediction error best covers its costs. We
 prove that greedy exchange is optimal in this framework under stated conditions, and that familiar
 mechanisms---exact caching, weight decay, EWC-style protection, and delta-rule decay---appear as
-boundary points of the same objective. In controlled online experiments across two environment
-families, a noise-valuation control establishes that the value signal itself, not the routing
-machinery, drives performance under capacity pressure. Routing throughput obeys a dose--response law in
-transition costs spanning $175\times$, while maintenance tariffs never bind at tested scales; the
-operative price of memory is movement, not storage. Several pre-registered predictions failed, and we
-report these failures with diagnoses: residence-time bimodality is structural rather than priced;
-promotion timing is set by switching costs rather than prediction errors at every testable operating
-point; and a port to a nonlinear predictor falsified our hypothesis that capacity pressure favors the
-priced router, localizing credit misassignment through the nonlinearity as the binding obstacle. We
-conclude that memory hierarchy structure can be derived rather than designed, and that trustworthy
-valuation under nonlinearity is the central open problem this framing exposes.
+boundary points of the same objective. The framework then makes a falsifiable prediction that we test:
+routing quality should be limited by price quality, not by routing structure. Replacing a cheap
+gradient-magnitude price with an exact leave-one-out loss price confirms this---halving retention error
+relative to the cheap tag ($p=0.002$), eliminating a significant deficit to fixed-schedule
+consolidation, and preserving the gap to noise-valuation controls---while routing structure, switching
+costs, and store geometry stay untouched. Throughput obeys a dose--response law in transition costs
+spanning $175\times$, while maintenance tariffs never bind at tested scales; the operative price of
+memory is movement, not storage. Failed pre-registered predictions are reported with diagnoses:
+residence-time bimodality is structural rather than priced; promotion timing follows switching costs,
+not prediction errors; and first-order prices on a nonlinear predictor misattribute credit precisely
+when routing is most frequent, which the leave-one-out result independently corroborates on the linear
+substrate. We conclude that memory hierarchy structure can be derived rather than designed, that
+allocation is solved given honest prices, and that trustworthy price discovery under nonlinearity is
+the concrete open problem this framing isolates.
 
 \medskip
 \noindent\textbf{AI use disclosure.} AI tools were used for code development assistance and manuscript
@@ -84,10 +87,13 @@ spanning $175\times$, while maintenance tariffs never bind at operational scales
 partitions into three regimes (saturated, selective, frozen), each with distinct observable
 consequences. The operative control knob of a priced memory is the cost of moving knowledge, not the
 cost of holding it.
-\item \textbf{Controlled evidence.} Across two environment families and four nonstationarity regimes
-with policy-matched baselines ($n=10$ per cell), noise valuation---identical machinery with the value
-signal replaced by noise---is consistently the worst or tied-worst policy, establishing that predictive
-value, not sparsity or bookkeeping, carries performance under capacity pressure.
+\item \textbf{Controlled evidence and a confirmed prediction.} Across two environment families and
+four nonstationarity regimes with policy-matched baselines ($n=10$ per cell), noise valuation is
+consistently worst or tied-worst, establishing that predictive value---not sparsity or
+bookkeeping---carries performance under capacity pressure. The framework further predicts that routing
+quality is limited by price quality rather than routing structure; replacing cheap gradient tags with
+exact leave-one-out loss prices confirms this, halving retention error ($p=0.002$) and erasing a
+significant deficit to fixed-schedule consolidation while leaving all machinery untouched.
 \item \textbf{A map of failures.} Three pre-registered predictions failed; we report each with its
 diagnosis. Residence-time bimodality proved structural rather than priced. Promotion timing is governed
 by switching costs, not prediction errors, at every operating point we can power-test. A nonlinear
@@ -249,9 +255,10 @@ often, rare ones rarely) and Poisson change-points that re-randomize part of the
 regime alternates deterministically between two frozen rules. A second environment family replaces
 Bernoulli feature spikes with support-gated Gaussian activations, raising effective capacity pressure.
 All capacity-limited learners share the same predictor, SGD updates, capacities ($M_f{=}45$,
-$M_s{=}15$), and value EMA; they differ only in routing policy: PES; random-routing (identical
-machinery, noise valuation); clock-value and clock-magnitude (fixed-period swaps); and single-store
-decay. Dense SGD is reported as an upper reference. Each cell uses $n=10$ seeds; comparisons use paired
+$M_s{=}15$), and value EMA; they differ only in routing policy: PES (cheap gradient-tag prices); PES-LOO (exact leave-one-out
+prices, Section~\ref{sec:loo}); random-routing (identical machinery, noise valuation); clock-value and
+clock-magnitude (fixed-period swaps); and single-store decay. Dense SGD, plain and weight-decayed, is
+reported as an upper reference. Each cell uses $n=10$ seeds; comparisons use paired
 sign tests; predictions and competing hypotheses were registered before the runs.
 
 \subsection{Value necessity under capacity pressure}
@@ -263,11 +270,44 @@ than to sparsity or bookkeeping. Dense SGD retains more than all capacity-limite
 retention alone matters (stationary tail 0.003 vs 0.16), confirming that priced memory addresses budget
 allocation, not capacity limits themselves.
 
-Under the corrected margin router, no policy dominates across regimes: fixed-clock consolidation is
-significantly better in Bernoulli-stationary retention ($p=0.021$), while drift and volatile regimes
-show no significant separation among valued policies. We therefore do not claim per-regime superiority
-for priced routing at this scale; the claim that survives replication is value \emph{necessity}, not
-rule \emph{sufficiency} --- consistent with the price-trust analysis of Section~\ref{sec:nnport}.
+Under the initial margin router with cheap EMA tags, no policy dominated across regimes: fixed-clock
+consolidation was significantly better in Bernoulli-stationary retention ($p=0.021$). Rather than
+weakening the router structurally, we treated this deficit as evidence about \emph{prices}, following
+the framework's own prediction --- and Section~\ref{sec:loo} shows that exact pricing removes it.
+
+\subsection{Price quality is the binding constraint: exact leave-one-out pricing}
+\label{sec:loo}
+
+The framework's central falsifiable claim is that routing performance is limited by price quality, not
+by routing structure. For the linear predictor this can be tested exactly: the loss increase from
+deleting trace $i$ while holding the residual fixed is
+$\Delta L_i = r\,(w_i x_i) + \tfrac{1}{2}(w_i x_i)^2$, computable in closed form at every step. We
+re-ran PES with the cheap gradient-magnitude tag replaced by an EMA of this exact leave-one-out price,
+changing nothing else---same stores, tariffs, switching fees, hysteresis window, maturity gate, and
+learning rate. Criteria (a)~no loss to the clock in stationary retention, (b)~parity under drift,
+(c)~noise valuation strictly worst, were committed to version control before the run.
+
+All three pass (Fig.~\ref{fig:main}, red bars). In stationary retention, exact pricing cuts error by
+54\% relative to the same router with cheap tags ($0.074\pm0.024$ vs $0.161\pm0.058$; $p=0.002$) and
+eliminates the significant deficit to fixed-clock consolidation ($0.089\pm0.042$): a statistical tie,
+point estimate favoring PES-LOO. Under drift, exact pricing is numerically best of all policies
+($0.150\pm0.062$) and preserves parity with the clock ($p=0.11$). Noise valuation remains strictly
+worst throughout ($p\le 0.02$). The ordering noise $<$ gradient-tag $<$ exact-loss-price, with routing
+machinery held fixed, is the cleanest evidence in this paper: what separates priced memory from its
+competitors is the honesty of the price, and the tariff-space view predicts precisely which lever moves
+it. Under volatile change rates no scheme separates ($0.26$--$0.29$ for all policies including exact
+pricing): when the world re-randomizes faster than migrations amortize, allocation quality is washed
+out by churn---itself a prediction of the economics, since the value of honest prices scales with the
+horizon over which placements are honored.
+
+\paragraph{Scope: the unlimited-memory ceiling.}
+Dense SGD with tuned weight decay---no stores, no routing---is the reference when memory is not truly
+scarce. At our dimensions ($D{=}200$, support $25$) it reaches $0.0024$ stationary tail and
+$0.113$--$0.133$ under drift at $\lambda\in[5{\times}10^{-4},2{\times}10^{-3}]$, exceeding every
+capacity-limited policy including PES-LOO. Capacity-limited routing earns its complexity only where the
+budget genuinely binds---KV caches sized to context windows, on-device streams, modular routers---that
+is, wherever effective dimensionality exceeds what unconstrained weights can hold. All claims here are
+claims about that regime.
 
 \subsection{Movement is the binding price}
 Sweeping maintenance tariffs across two orders of magnitude ($\lambda_s\in[10^{-5},10^{-2}]$,
@@ -313,9 +353,11 @@ not when. Selective-band timing was tested at $n=10$ and found indistinguishable
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.85\linewidth]{figs/fig_main_comparison.pdf}
-\caption{Loss tails for capacity-matched policies across regimes (Bernoulli family, $n=10$,
-corrected margin router). Fixed-clock consolidation leads stationary retention; valued policies
-tie under drift; noise valuation is worst or tied-worst throughout.}
+\caption{Loss tails for capacity-matched policies across regimes (Bernoulli family, $n=10$).
+Exact leave-one-out pricing (red) halves the error of the same router with cheap gradient tags in
+stationary retention, ties fixed-clock consolidation, stays numerically best under drift, and keeps
+noise valuation strictly worst --- while all routing machinery is held fixed. Under volatile churn no
+policy separates.}
 \label{fig:main}
 \end{figure}
 
@@ -357,16 +399,22 @@ as slots approach the support size, greedy exchange with first-order prices lose
 \section{Discussion}
 \label{sec:discussion}
 
-The program yields one positive design principle and one negative boundary, and we regard the pair as
-the contribution. Positively: persistence economics is a coherent normative frame. It derives routing
-from a single priced objective, recovers established mechanisms as corners of its tariff space
+The program yields one positive design principle, one confirmed prediction, and one open boundary. The
+principle: persistence economics is a coherent normative frame---it derives routing from a single
+priced objective, recovers established mechanisms as corners of its tariff space
 (Table~\ref{tab:corners}), provably allocates optimally given prices (Propositions~\ref{prop:static},
-\ref{prop:dynamic}), and exposes movement cost---not storage cost---as the operative control knob,
-with a $175\times$ dose--response law and three behavioral regimes. Negatively: the cheapest
-instantiation of price discovery does not clear the bar that the frame itself sets. Under capacity
-pressure on a nonlinear substrate, first-order gradient prices misattribute credit often enough that an
-inflexible clock beats optimal-in-theory allocation with untrustworthy prices. The two results are two
-sides of one statement: \emph{allocation is solved; price discovery is not}.
+\ref{prop:dynamic}), and exposes movement cost as the operative control knob, with a $175\times$
+dose--response law and three behavioral regimes. The confirmed prediction: when the framework said the
+router's deficit was a pricing problem rather than a structural one, swapping cheap gradient tags for
+exact leave-one-out prices fixed it without touching any other component---halving retention error and
+tying fixed-schedule consolidation. A framework earns credibility by surviving its own diagnosis, and
+this one did. The open boundary: exact prices exist only where deletion effects are computable in
+closed form. On the nonlinear substrate of Section~\ref{sec:nnport}, first-order tags misattribute
+credit exactly when routing is most frequent, and no closed-form correction is available; making price
+discovery trustworthy through nonlinearity---influence-style probes at decision moments, learned
+critics, or amortized surrogates validated against exact linear prices---is the concrete next problem.
+The two results are two sides of one statement: \emph{allocation is solved given honest prices;
+honest price discovery beyond the linear regime is not}.
 
 Three methodological observations generalize beyond this study. First, before interpreting when a gated
 controller acts, verify its action budget is unsaturated; a saturated controller's timing describes its
@@ -386,13 +434,16 @@ span two implementations. These limitations bound every claim above.
 \section{Conclusion}
 
 We asked whether memory hierarchy structure can be derived rather than designed. Within a priced
-allocation framework the answer divides cleanly: derivation is possible in principle---one objective
-recovers known mechanisms as corner pricings and allocates provably optimally given prices---and
-incomplete in practice, because naive price discovery through a nonlineary predictor cannot yet be
-trusted exactly where pricing matters most, under pressure. The framework organizes existing mechanisms
-onto a single tariff landscape, contributes measurable laws about what governs routed memory, and
-identifies trustworthy valuation as the concrete open problem standing between this formulation and
-competitive learned memory hierarchies.
+allocation framework the answer divides into three parts. Derivation is possible in principle: one
+objective recovers known mechanisms as corner pricings and allocates provably optimally given prices.
+The frame is scientifically productive: its diagnosis that routing quality tracks price quality
+survived an experimental test, with exact leave-one-out pricing halving retention error and closing the
+gap to fixed-schedule consolidation while machinery stayed fixed. And the frame locates its own limit:
+where deletion effects cannot be priced in closed form---nonlinear predictors above all---trustworthy
+price discovery replaces allocation as the binding constraint. What a learning machine should remember
+is what earns its keep minus what it costs to keep; this paper contributes the accounting structure,
+the evidence that honest accounting is the operative lever, and a measured statement of where the
+accounting still cannot be made honest.
 
 \paragraph{Reproducibility.}
 Experiments run on numpy and matplotlib; torch appears only in Section~\ref{sec:nnport}. Twenty-three

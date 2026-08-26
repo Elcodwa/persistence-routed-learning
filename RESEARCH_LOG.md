@@ -95,3 +95,12 @@ tiny experiments designed numpy-first. arXiv API + Semantic Scholar API reachabl
   Hassan, minimal AI disclosure (code assistance + review only, no agent name), MIT LICENSE, README,
   .gitignore, git repo initialized and committed (78 files, commit a6006d3). PDF rebuilt: 11 pages,
   figures embedded.
+- D17 [R7/R8 pivot]: numerical verification -> margin-rule correction -> clock-beats-PES deficit ->
+  diagnosis "price quality" -> PRE-REGISTERED (git commit) R7 test: exact LOO prices
+  (dLi = r*wixi + 0.5(wixi)^2) replace EMA|grad| tags, nothing else changes. ALL THREE criteria pass:
+  stationary 0.074±0.024 (vs EMA 0.161, p=.002; ties clock 0.089), drift 0.150 best-of-all,
+  random strictly worst; volatile flat as predicted. R8 kill test: dense+wd hits 0.0024 stationary /
+  0.133 drift at D=200 — unlimited-memory ceiling quantified; scope narrowed to truly scarce regimes.
+  Paper rewritten around "price quality is the binding constraint" (abstract, contributions, §5.2,
+  new §5.3 LOO section + scope paragraph, discussion, conclusion); Fig 3 regenerated with PES-LOO bars;
+  rebuilt 12pp clean; README updated.

@@ -64,21 +64,32 @@ plt.text(1, 1.03, "median 0.97, n=10:\nnot significant", ha="center", fontsize=6
 plt.title("Three routing regimes")
 save(plt.gcf(), "fig_regimes")
 
-# ---------------- Fig 3: main comparison (corrected rule) ---------------------
+# ---------------- Fig 3: main comparison incl. LOO pricing -------------------
 rows = json.load(open(os.path.join(R, "margin_rerun.json")))
+r78 = json.load(open(os.path.join(R, "r7r8_results.json")))
+loo_runs = {rec["regime"]: rec["runs"]["pes_loo"] for rec in r78["r7"]}
+import json as _json
+_v = _json.load(open(os.path.join(R, "r7_volatile.json")))
+loo_runs["volatile"] = _v["runs"]
 regs = [r["regime"] for r in rows if r["family"] == "bernoulli"]
-meths = ["pes", "clock", "single_decay", "random_routing"]
-x = np.arange(len(regs)); wdt = 0.19
-plt.figure(figsize=(5.4, 2.8))
+meths = ["pes_loo", "pes", "clock", "single_decay", "random_routing"]
+C["pes_loo"] = "#e31a1c"
+NICE["pes_loo"] = "PES-LOO (exact price)"
+x = np.arange(len(regs)); wdt = 0.16
+plt.figure(figsize=(5.8, 2.9))
 for k, m in enumerate(meths):
-    means = [np.mean(rows[i]["tails"][m]) for i in range(len(regs))]
-    sds   = [np.std(rows[i]["tails"][m]) for i in range(len(regs))]
-    plt.bar(x + (k-1.5)*wdt, means, wdt, yerr=sds, capsize=2,
-            color=C[m], label=NICE[m])
+    if m == "pes_loo":
+        vals = [loo_runs[r] for r in regs]
+        means = [np.mean(v) for v in vals]; sds = [np.std(v) for v in vals]
+    else:
+        means = [np.mean(rows[i]["tails"][m]) for i in range(len(regs))]
+        sds   = [np.std(rows[i]["tails"][m]) for i in range(len(regs))]
+    plt.bar(x + (k-2)*wdt, means, wdt, yerr=sds, capsize=2,
+            color=C[m], label=NICE[m], alpha=1.0 if m == "pes_loo" else 0.85)
 plt.xticks(x, [r.capitalize() for r in regs])
 plt.ylabel("loss tail (Bernoulli family)")
-plt.legend(ncol=2, frameon=False)
-plt.title("Capacity-matched policies, corrected margin router ($n{=}10$)")
+plt.legend(ncol=2, frameon=False, fontsize=7.5)
+plt.title("Exact leave-one-out pricing vs baselines ($n{=}10$)")
 save(plt.gcf(), "fig_main_comparison")
 
 # ---------------- Fig 4: MLP capacity-pressure inversion ----------------------

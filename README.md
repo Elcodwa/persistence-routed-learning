@@ -41,11 +41,14 @@ python pes_torch.py && python r6_capacity.py
 
 ## Status & honest scope
 
-All laws are measured on sparse linear streams (two feature families) plus a two-layer MLP port.
-Priced routing provably allocates optimally given prices; making prices trustworthy through
-nonlinearity is open. Negative results are reported with diagnoses in the paper. See
-`RESEARCH_REPORT.md` and `research/results/RESULTS_NARRATIVE.md` for the full story, including the
-failed-prediction ledger.
+**Headline result:** routing performance tracks price quality, not routing structure — swapping cheap
+gradient tags for exact leave-one-out loss prices halves retention error (p=0.002), ties
+fixed-schedule consolidation, and keeps noise controls strictly worst, with all machinery fixed.
+Laws are measured on sparse linear streams (two feature families) plus a two-layer MLP port.
+Dense SGD + weight decay remains the reference when memory is not truly scarce; priced routing targets
+genuinely capacity-bound regimes (KV budgets, edge streams, modular routers). Negative results are
+reported with diagnoses in the paper. See `RESEARCH_REPORT.md`, `research/results/R7_R8_REPORT.md`,
+and `research/results/RESULTS_NARRATIVE.md`.
 
 ## License
 
