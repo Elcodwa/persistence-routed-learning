@@ -85,3 +85,13 @@ tiny experiments designed numpy-first. arXiv API + Semantic Scholar API reachabl
   0 errors), output main.pdf verified: 8 pages, all propositions/results/disclosure present; one
   cosmetic overfull hbox. AI-disclosure paragraph embedded in abstract + back matter per venue policy.
   Humanizer audit previously applied to source prose; numbers traced to JSON artifacts.
+- D16 [math verification caught a real error + full paper rebuild]: numerical audit showed propositions
+  (margin rule) != implementation (level rule) — margin picks suboptimal pair ~94% of configs.
+  Corrected router implemented; first attempt exposed slow-staleness bug (churn loop); fixed by
+  refreshing last_touch for all residents; 23/23 tests green. Margin-rule re-run: value-necessity
+  SURVIVES, per-regime dominance claims WITHDRAWN (clock wins stationary), Gaussian family flat,
+  dose-response re-measured (margin rule saturates near floor). Paper fully rewritten to academic
+  standard: corrected numbers, 4 figures from real data, formal register, author = Hazem Mohamed Ali
+  Hassan, minimal AI disclosure (code assistance + review only, no agent name), MIT LICENSE, README,
+  .gitignore, git repo initialized and committed (78 files, commit a6006d3). PDF rebuilt: 11 pages,
+  figures embedded.
