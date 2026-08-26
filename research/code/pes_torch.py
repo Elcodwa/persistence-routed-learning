@@ -24,6 +24,7 @@ from pes_core import DriftingSparseEnv
 DEVICE = "cpu"
 ETA_SGD = 0.003         # inner LR of the MLP (batch-1 online stability; see mlp_diag6)
 GRAD_CLIP = 1.0         # stabilize single-sample updates
+PRICE_MODE = "tag"      # R9: 'tag' (|grad*x| EMA, original) or 'loo_surrogate' (deletion cost)
 REGIME_KW = {
     "stationary": dict(p_change=0.0),
     "drifting":   dict(p_change=0.002),
@@ -74,6 +75,7 @@ class TorchStoreLearner:
         self.slot_of = {}
         self.free_slots = list(range(cap_total))
         self.maturity = 50
+        self._pending_price = None   # R9: per-step deletion-cost prices when active
         self.torch_rng = torch.Generator().manual_seed(seed + 5)
         self.model = ResidualMLP(self.cap_fast + max(self.cap_slow, 0)).to(DEVICE)
         self.opt = torch.optim.Adam(self.model.parameters(), lr=ETA_SGD)
@@ -165,10 +167,31 @@ class TorchStoreLearner:
 
         self.opt.zero_grad()
         yhat = self.model(xb)
-        # value signal FIRST (graph still alive): |x_i * dyhat/dpacked_i|
+        # value signal FIRST (graph still alive): price = deletion-cost estimate
         gi = torch.autograd.grad(yhat, xb,
                                  grad_outputs=torch.ones_like(yhat),
                                  retain_graph=True)[0][0].detach().numpy()
+        if PRICE_MODE == "loo_surrogate":
+            # R9: first-order Taylor of the deletion cost on the OUTPUT side.
+            # Zeroing resident coord i's slot changes yhat by ~ -gi[slot]*x[slot];
+            # the loss change is r*deltayhat + 0.5*deltayhat^2 (clamped at 0).
+            # Sign check: if removing i moves prediction TOWARD y (reduces |r|),
+            # dy has the same sign as r and the linear term prices it as a gain
+            # (resp 0); if it moves prediction AWAY, resp grows. The quadratic
+            # term keeps large deletions expensive either way.
+            r_now = float(y - float(yhat.item()))
+            self._pending_price = {}
+            for i in list(self.w.keys()):
+                k = self.slot_of.get(i)
+                resp = 0.0
+                if k is not None and i in pos:
+                    dy = float(gi[k]) * float(packed[k])
+                    lin = r_now * (-dy)              # loss change from removal, linear term
+                    quad = 0.5 * dy * dy             # curvature safeguard
+                    resp = max(0.0, lin + quad)
+                self._pending_price[i] = resp
+        else:
+            self._pending_price = None
         loss = 0.5 * (yhat - yb) ** 2
         loss.backward()
         self._clip()
@@ -179,7 +202,10 @@ class TorchStoreLearner:
         thr = np.quantile(touched_abs, 1 - 0.05)
         touched = set(int(i) for i in np.nonzero(np.abs(x) > thr)[0])
         for i in list(self.w.keys()):
-            resp = abs(gi[pos[i]] * x[i]) if i in pos else 0.0
+            if self._pending_price is not None and i in self._pending_price:
+                resp = self._pending_price[i]
+            else:
+                resp = abs(gi[pos[i]] * x[i]) if i in pos else 0.0
             self.v[i] = self.rho * self.v[i] + (1 - self.rho) * resp
             if i in touched:
                 self.age[i] = 0; self.last_touch[i] = t
