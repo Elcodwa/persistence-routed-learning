@@ -1,0 +1,18 @@
+[    64s] bernoulli/stationary/pes: 0.1701±0.0616
+[    92s] bernoulli/stationary/clock: 0.1515±0.0522
+[   193s] bernoulli/stationary/single_decay: 0.2232±0.0861
+[   245s] bernoulli/stationary/random_routing: 0.2275±0.0871
+[   268s] bernoulli/drifting/pes: 0.1752±0.0774
+[   301s] bernoulli/drifting/clock: 0.2009±0.0827
+[   344s] bernoulli/drifting/single_decay: 0.2054±0.0769
+[   399s] bernoulli/drifting/random_routing: 0.1957±0.0729
+[   410s] gaussian/stationary/pes: 0.1611±0.0525
+[   421s] gaussian/stationary/clock: 0.1535±0.1043
+[   433s] gaussian/stationary/single_decay: 0.4776±0.0889
+[   460s] gaussian/stationary/random_routing: 0.1975±0.0694
+[   504s] gaussian/drifting/pes: 0.4491±0.3367
+[   521s] gaussian/drifting/clock: 0.5671±0.2790
+[   538s] gaussian/drifting/single_decay: 0.6748±0.2308
+[   558s] gaussian/drifting/random_routing: 0.5240±0.3104
+WROTE expansion_results.json
+EXPANSION_DONE

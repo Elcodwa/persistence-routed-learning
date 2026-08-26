@@ -1,0 +1,11 @@
+km 0.5 seed 0 -> {'seed': 0, 'n_promo': 766, 'promo_rate': 0.25533333333333336, 'saturated': True, 'lag5': 1.1560244348627244, 'lag30': 0.9639540769658859, 'contrast': 1.1992526018473761}
+km 0.5 seed 1 -> {'seed': 1, 'n_promo': 759, 'promo_rate': 0.253, 'saturated': True, 'lag5': 0.9761843217985209, 'lag30': 0.8924699654587124, 'contrast': 1.093800754736638}
+km 0.5 seed 2 -> {'seed': 2, 'n_promo': 754, 'promo_rate': 0.25133333333333335, 'saturated': True, 'lag5': 1.0242984824194497, 'lag30': 0.8873991555766471, 'contrast': 1.1542702919903536}
+km 1.0 seed 0 -> {'seed': 0, 'n_promo': 178, 'promo_rate': 0.059333333333333335, 'saturated': False, 'lag5': 1.1711370020823049, 'lag30': 1.3396220573153395, 'contrast': 0.8742294109648464}
+km 1.0 seed 1 -> {'seed': 1, 'n_promo': 133, 'promo_rate': 0.044333333333333336, 'saturated': False, 'lag5': 1.3215020216192543, 'lag30': 0.8657505185131994, 'contrast': 1.5264235982078784}
+km 1.0 seed 2 -> {'seed': 2, 'n_promo': 188, 'promo_rate': 0.06266666666666666, 'saturated': False, 'lag5': 1.1161029339781317, 'lag30': 0.9958523073258008, 'contrast': 1.1207514666258538}
+km 2.0 seed 0 -> {'seed': 0, 'n_promo': 18, 'promo_rate': 0.006, 'saturated': False, 'lag5': 0.5656210061540096, 'lag30': 0.8696672585624208, 'contrast': 0.6503878357902005}
+km 2.0 seed 1 -> {'seed': 1, 'n_promo': 1, 'promo_rate': 0.0003333333333333333, 'saturated': False}
+km 2.0 seed 2 -> {'seed': 2, 'n_promo': 22, 'promo_rate': 0.007333333333333333, 'saturated': False, 'lag5': 0.6716740694134229, 'lag30': 1.6801945604910515, 'contrast': 0.39975969760140173}
+WROTE r2prime.json
+R2PRIME_DONE

@@ -1,0 +1,61 @@
+{
+ "dose": [
+  {
+   "param": "hysteresis",
+   "value": 1,
+   "rate": 0.002
+  },
+  {
+   "param": "hysteresis",
+   "value": 25,
+   "rate": 0.0022222222222222222
+  },
+  {
+   "param": "hysteresis",
+   "value": 100,
+   "rate": 0.0022222222222222222
+  },
+  {
+   "param": "kappa",
+   "value": 0.0,
+   "rate": 0.0011111111111111111
+  },
+  {
+   "param": "kappa",
+   "value": 0.01,
+   "rate": 0.002
+  },
+  {
+   "param": "kappa",
+   "value": 0.05,
+   "rate": 0.002
+  },
+  {
+   "param": "kappa",
+   "value": 0.2,
+   "rate": 0.002
+  }
+ ],
+ "ablations": [
+  {
+   "config": "pes_full",
+   "mean": 0.2798038916736512,
+   "sd": 0.059743745126943436
+  },
+  {
+   "config": "pes_no_switch_cost",
+   "mean": 0.28020860729735453,
+   "sd": 0.06142640092719311
+  },
+  {
+   "config": "pes_no_hysteresis",
+   "mean": 0.2794637876908859,
+   "sd": 0.05928962192333195
+  },
+  {
+   "config": "pes_no_fast_decay",
+   "mean": 0.2815975425981025,
+   "sd": 0.05765826314243535
+  }
+ ]
+}

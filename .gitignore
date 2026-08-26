@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# LaTeX build artifacts (keep sources, figures, and the final PDF)
+research/paper/latex/*.aux
+research/paper/latex/*.log
+research/paper/latex/*.out
+research/paper/latex/*.bbl
+research/paper/latex/*.blg
+research/paper/latex/build*.log
+
+# OS cruft
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Large transient caches
+*.tmp

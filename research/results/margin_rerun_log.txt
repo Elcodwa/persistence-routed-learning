@@ -1,0 +1,44 @@
+[    50s] bernoulli/stationary/pes: 0.1613±0.0577
+[   142s] bernoulli/stationary/clock: 0.0892±0.0423
+[   195s] bernoulli/stationary/single_decay: 0.1538±0.0595
+[   240s] bernoulli/stationary/random_routing: 0.2290±0.0982
+   pes vs clock: diff=+0.0721 p=0.021
+   pes vs single_decay: diff=+0.0075 p=0.623
+   pes vs random_routing: diff=-0.0677 p=0.021
+[   284s] bernoulli/drifting/pes: 0.1733±0.0589
+[   311s] bernoulli/drifting/clock: 0.1643±0.0485
+[   342s] bernoulli/drifting/single_decay: 0.1613±0.0433
+[   379s] bernoulli/drifting/random_routing: 0.1958±0.0702
+   pes vs clock: diff=+0.0090 p=0.623
+   pes vs single_decay: diff=+0.0120 p=0.344
+   pes vs random_routing: diff=-0.0225 p=0.754
+[   421s] bernoulli/volatile/pes: 0.2798±0.0597
+[   463s] bernoulli/volatile/clock: 0.2921±0.0533
+[   498s] bernoulli/volatile/single_decay: 0.2875±0.0659
+[   546s] bernoulli/volatile/random_routing: 0.2563±0.0478
+   pes vs clock: diff=-0.0123 p=0.109
+   pes vs single_decay: diff=-0.0077 p=0.754
+   pes vs random_routing: diff=+0.0235 p=0.021
+[   567s] gaussian/stationary/pes: 0.0510±0.0087
+[   581s] gaussian/stationary/clock: 0.0244±0.0118
+[   594s] gaussian/stationary/single_decay: 0.0600±0.0114
+[   613s] gaussian/stationary/random_routing: 0.0511±0.0089
+   pes vs clock: diff=+0.0266 p=0.002
+   pes vs single_decay: diff=-0.0090 p=0.002
+   pes vs random_routing: diff=-0.0001 p=1.000
+[   637s] gaussian/drifting/pes: 0.3452±0.3276
+[   654s] gaussian/drifting/clock: 0.3475±0.3474
+[   678s] gaussian/drifting/single_decay: 0.3490±0.3319
+[   703s] gaussian/drifting/random_routing: 0.3476±0.3239
+   pes vs clock: diff=-0.0022 p=0.754
+   pes vs single_decay: diff=-0.0038 p=0.109
+   pes vs random_routing: diff=-0.0024 p=0.623
+[   743s] gaussian/volatile/pes: 1.2011±0.2685
+[   765s] gaussian/volatile/clock: 1.1846±0.2487
+[   799s] gaussian/volatile/single_decay: 1.1330±0.2408
+[   830s] gaussian/volatile/random_routing: 1.1625±0.2713
+   pes vs clock: diff=+0.0165 p=0.109
+   pes vs single_decay: diff=+0.0681 p=0.109
+   pes vs random_routing: diff=+0.0386 p=0.754
+WROTE margin_rerun.json
+MARGIN_DONE

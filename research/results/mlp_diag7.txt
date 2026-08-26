@@ -1,0 +1,2 @@
+stabilized MLP full-input: [0.0519, 0.0149, 0.0156, 0.0166] (baseline 0.05)
+DIAG7_DONE
