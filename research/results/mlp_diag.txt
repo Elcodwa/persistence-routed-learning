@@ -1,3 +1,0 @@
-pes loss per 200-step block: [0.7381, 0.6131, 0.6137, 1.0138, 0.5141, 0.7928]
-single loss per 200-step block: [0.7163, 0.6603, 0.5798, 0.9669, 0.4992, 0.8712]
-DIAG_DONE

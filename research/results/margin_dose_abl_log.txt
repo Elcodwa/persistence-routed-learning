@@ -1,7 +1,0 @@
-DOSE: [{"param": "hysteresis", "value": 1, "rate": 0.002}, {"param": "hysteresis", "value": 25, "rate": 0.0022222222222222222}, {"param": "hysteresis", "value": 100, "rate": 0.0022222222222222222}, {"param": "kappa", "value": 0.0, "rate": 0.0011111111111111111}, {"param": "kappa", "value": 0.01, "rate": 0.002}, {"param": "kappa", "value": 0.05, "rate": 0.002}, {"param": "kappa", "value": 0.2, "rate": 0.002}]
-[    98s] pes_full: 0.2798±0.0597
-[   142s] pes_no_switch_cost: 0.2802±0.0614
-[   202s] pes_no_hysteresis: 0.2795±0.0593
-[   233s] pes_no_fast_decay: 0.2816±0.0577
-WROTE margin_dose_abl.json
-MARGIN_DA_DONE

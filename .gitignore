@@ -12,6 +12,29 @@ research/paper/latex/*.out
 research/paper/latex/*.bbl
 research/paper/latex/*.blg
 research/paper/latex/build*.log
+research/paper/latex/b1.log
+research/paper/latex/b2.log
+
+# Working files: internal research process, logs, diagnostics (kept locally,
+# not part of the published artifact)
+IDEA.md
+RESEARCH_LOG.md
+RESEARCH_REPORT.md
+research/results/*_log.txt
+research/results/mlp_diag*.txt
+research/results/rho_probe.txt
+research/code/figs/
+
+# Internal exploration notes and AI-assistance working documents
+research/gaps/
+research/hypotheses/
+research/literature/
+research/rejected_ideas/
+research/paper/DRAFT_PES_v1.md
+research/paper/PAPER_SUBMISSION.md
+
+# Legacy exploratory figures superseded by paper figures
+research/figures/
 
 # OS cruft
 Thumbs.db

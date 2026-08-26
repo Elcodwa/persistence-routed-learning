@@ -389,6 +389,15 @@ $\partial\hat y/\partial x_i$ through a tanh layer omits feature interactions. A
 noisy price rarely and averages the noise away. Pricing requires a trustworthy price; naive gradient
 tags degrade fastest in busy markets.
 
+A first attempt to import the linear substrate's fix --- a first-order output-side Taylor surrogate of
+the deletion cost, computed through the live network --- made matters worse rather than better (tails
+$0.104$ vs $0.031$ for tags vs $0.013$ for the clock; five paired seeds with identical ordering in
+every pair). Pricing removal as a potential \emph{gain} demands counterfactual accuracy that a
+linearization through interacting hidden units cannot supply: when the surrogate errs, it errs
+precisely on the traces worth protecting. The open problem therefore stands, now bounded on both
+sides --- exact prices exist only in closed-form regimes, and naive surrogates demonstrably do not
+bridge the gap.
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.6\linewidth]{figs/fig_mlp_pressure.pdf}

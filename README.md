@@ -47,8 +47,8 @@ fixed-schedule consolidation, and keeps noise controls strictly worst, with all 
 Laws are measured on sparse linear streams (two feature families) plus a two-layer MLP port.
 Dense SGD + weight decay remains the reference when memory is not truly scarce; priced routing targets
 genuinely capacity-bound regimes (KV budgets, edge streams, modular routers). Negative results are
-reported with diagnoses in the paper. See `RESEARCH_REPORT.md`, `research/results/R7_R8_REPORT.md`,
-and `research/results/RESULTS_NARRATIVE.md`.
+reported with diagnoses in the paper. See `research/results/R7_R8_REPORT.md` and
+`research/results/RESULTS_NARRATIVE.md`; full theory in `research/theory/`.
 
 ## License
 

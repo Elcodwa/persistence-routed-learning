@@ -1,4 +1,0 @@
-unsaturated contrasts: [0.874, 1.526, 1.121, 0.996, 0.672, 0.935, 1.226, 1.612, 0.853, 0.7]
-n=10 median_contrast=0.966 frac>1.05=4/10 one_sided_p=0.8281
-WROTE r2double.json
-R2DOUBLE_DONE

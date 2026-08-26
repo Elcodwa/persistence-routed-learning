@@ -1,3 +1,0 @@
-EASY-TASK full-input MLP: [0.3025, 0.2995, 0.3725, 0.3245]
-predict-mean baseline: 0.0495
-DIAG5_DONE
