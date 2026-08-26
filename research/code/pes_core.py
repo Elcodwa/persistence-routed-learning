@@ -108,7 +108,7 @@ class SparseStore(BaseLearner):
 
     def __init__(self, D, eta=0.1, cap_fast=45, cap_slow=15, rho=0.98,
                  mu_fast=0.02, lam_slow=1e-4, kappa=0.05, t_recover=100, seed=0,
-                 kappa_move=0.02, hysteresis_w=25):
+                 kappa_move=0.02, hysteresis_w=25, price_mode="ema_grad"):
         super().__init__(D, eta, seed)
         self.cap_fast, self.cap_slow = cap_fast, cap_slow
         self.rho = rho                      # value EMA memory
@@ -130,6 +130,10 @@ class SparseStore(BaseLearner):
         self.promo_events = []              # (t, i, direction)
         self.evict_events = []
         self.stim_q = 0.05                  # stimulation quantile on |x|
+        # R7: price_mode 'ema_grad' (original EMA|grad| tag) or 'loo'
+        # (exact leave-one-out loss increase if trace were deleted now).
+        self.price_mode = price_mode
+        self.last_r = 0.0                   # cached prediction residual for LOO
 
     def resident(self):
         return np.array(sorted(self.w.keys()), dtype=int)
@@ -183,13 +187,21 @@ class SparseStore(BaseLearner):
     def observe_post(self, x, r, grad, idx):
         self._t = getattr(self, "_t", 0) + 1
         t = self._t
+        self.last_r = float(r)              # cached residual drives LOO pricing
         stim = np.quantile(np.abs(x), 1 - self.stim_q)
         # write rule scans ALL stimulated coordinates (not just current residents,
         # otherwise unseen coordinates could never enter the store)
         touched = set(int(i) for i in np.nonzero(np.abs(x) > stim)[0])
         # 1) value + age update for residents
         for i in list(self.w.keys()):
-            resp = abs(grad[idx == i][0]) if i in idx else 0.0
+            if self.price_mode == "loo":
+                # R7 exact leave-one-out price: loss increase from deleting trace i
+                # NOW, holding the residual fixed (linear predictor):
+                #   L(w - w_i e_i) - L(w) = r*(w_i x_i) + 0.5*(w_i x_i)^2
+                wx = float(self.w.get(i, 0.0)) * float(x[i])
+                resp = max(0.0, self.last_r * wx + 0.5 * wx * wx)
+            else:
+                resp = abs(grad[idx == i][0]) if i in idx else 0.0
             self.v[i] = self.rho * self.v[i] + (1 - self.rho) * resp
             if i in touched:
                 self.age[i] = 0; self.last_touch[i] = t
@@ -312,6 +324,10 @@ def make_learner(name, D, eta, seed, caps=(45, 15)):
     cf, cs = caps
     if name == "sgd_dense":      return SGDDense(D, eta, l2=0.0, seed=seed)
     if name == "sgd_l2":         return SGDDense(D, eta, l2=1e-3, seed=seed)
+    if name == "pes_loo":        # R7: PES with exact leave-one-out prices
+        return PES(D, eta, cap_fast=cf, cap_slow=cs, seed=seed, price_mode="loo")
+    if name == "sgd_wd":         # R8: dense SGD + weight decay (single-store kill test)
+        return SGDDense(D, eta, l2=2e-3, seed=seed)
     if name == "pes":            return PES(D, eta, cap_fast=cf, cap_slow=cs, seed=seed)
     if name == "random_routing": return RandomRouting(D, eta, cap_fast=cf, cap_slow=cs, seed=seed)
     if name == "clock":          return ClockConsolidator(period=200, mode="value", D=D, eta=eta,
