@@ -43,3 +43,9 @@ desktop.ini
 
 # Large transient caches
 *.tmp
+
+# PES-KV: scratch files only (raw JSONL results and figures ARE committed)
+kv_pes/notebooks/_part*.ipynb
+
+# Notebooks / OS
+.ipynb_checkpoints/
