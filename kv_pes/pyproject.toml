@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kv_pes"
+version = "0.1.0"
+description = "Empirical test of PES (Persistence-Economics Selection) for KV-cache eviction"
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+where = ["src"]
