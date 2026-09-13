@@ -10,7 +10,10 @@ import json
 from collections import defaultdict
 from typing import List, Optional
 
-from .stats import paired_compare, summarize
+try:
+    from .stats import paired_compare, summarize
+except (ImportError, ValueError):   # loaded outside the package (report script)
+    from stats import paired_compare, summarize
 
 BASELINES = ["full", "random", "window", "streaming", "h2o"]
 

@@ -79,7 +79,9 @@ including any observed failure of the PES margin rule.
 
 - [x] Phase 1: cache + 6 policies + unit tests
 - [x] Phase 2: tasks + grading (n = 12/cell)
-- [x] Phase 3/4/5 infrastructure: resumable sweeps, paired stats, boundary knobs
-- [x] Phase 6: plotting + reporting scaffolding
-- [ ] Real model sweeps (Colab T4) — run `notebooks/colab_runner.ipynb`
-- [ ] results.md from actual runs
+- [x] Phase 3: real model sweeps run (GPT-2 full grid; TinyLlama; Qwen2.5-1.5B — **Qwen run invalid, see results**)
+- [x] Phase 4: paired sign-test statistics, all comparisons reported
+- [x] Phase 5: boundary mapping (delayed_needle floor + PES-vs-H2O boundary located on dose-response)
+- [x] Phase 6: figures + `results/results.md` written from real runs
+
+**Headline:** the paper's central positive claim does NOT hold broadly for KV-cache eviction. PES wins decisively at loose budgets (GPT-2 b=512 early needle: 1.00 vs H2O 0.33, p<0.001) and fails exactly as §7.4 predicts at intermediate budgets (GPT-2 b=256 early needle: 0.00 vs H2O 1.00, p<0.001; replicated on TinyLlama). Multi-fact QA (non-linear credit assignment) defeats every eviction policy, PES worst-or-tied. Full narrative + all 160 paired comparisons in [`results/results.md`](results/results.md). Qwen2.5-1.5B data flagged invalid (degenerate generation, not a cache effect) — rerun with the Instruct variant needed for a 3-model claim.

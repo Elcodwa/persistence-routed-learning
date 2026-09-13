@@ -5,14 +5,16 @@ baseline comparisons (wins and losses alike), plus explicit pointers to where
 the Phase 5 boundary evidence lives. Nothing is filtered or cherry-picked.
 """
 import argparse
+import json
+import os
 import sys
 from collections import defaultdict
 
-sys.path.insert(0, __file__.rsplit("scripts", 1)[0] + "src")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src", "kv_pes"))
 
-from kv_pes.analysis import (load_records, paired_vs_baselines, dose_response,
-                             needle_position_curve)
-from kv_pes.stats import summarize
+import analysis as A
+from analysis import load_records, paired_vs_baselines, dose_response
+from stats import summarize
 
 TEMPLATE = """# Results: PES vs published KV-eviction baselines
 
